@@ -1,7 +1,12 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts'
 import HeartbeatVisualizer from '../components/Dashboard/HeartbeatVisualizer'
+<<<<<<< HEAD
 import { currentScore, scoreHistory, scoreForecast, spendingBreakdown, recentTransactions, getCategoryColor, currentUser, getBandConfig } from '../data/mockData'
 import { TrendingUp, Flame, Zap, ArrowUpRight } from 'lucide-react'
+=======
+import { currentScore, scoreHistory, scoreForecast, spendingBreakdown, recentTransactions, getCategoryColor, currentUser, getBandConfig, ghostSubscriptions, ghostSummary, smartNudges } from '../data/mockData'
+import { TrendingUp, Flame, Zap, ArrowUpRight, Ghost, AlertTriangle, Check, X } from 'lucide-react'
+>>>>>>> 663acad6f0533edac3f2dff1c2a5ae88ffde714d
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
@@ -55,6 +60,82 @@ export default function Dashboard() {
                 ))}
             </div>
 
+<<<<<<< HEAD
+=======
+            {/* Smart Nudge Banner — Pending Categorizations */}
+            {smartNudges.length > 0 && (
+                <div className="card" style={{ marginBottom: 24, border: '1px solid rgba(255,193,7,0.3)', background: 'rgba(255,193,7,0.05)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                        <AlertTriangle size={18} color="#ffc107" />
+                        <span style={{ fontSize: 14, fontWeight: 700, color: '#ffc107' }}>Smart Nudge</span>
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 'auto' }}>{smartNudges.length} pending • +12 XP each</span>
+                    </div>
+                    {smartNudges.map((nudge, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
+                                    {nudge.merchantName} — ₹{nudge.amount.toLocaleString()}
+                                </div>
+                                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                                    Suggested: <span style={{ color: '#ffc107', fontWeight: 600 }}>{nudge.suggestedCategory.split('.')[1]}</span>
+                                    <span style={{ opacity: 0.5 }}> ({Math.round(nudge.suggestedConfidence * 100)}% conf) • {nudge.timeAgo}</span>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: 6 }}>
+                                <button style={{ padding: '6px 14px', borderRadius: 6, background: 'var(--accent-green)', color: '#0a0f1c', border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    <Check size={12} /> Confirm
+                                </button>
+                                <button style={{ padding: '6px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.06)', color: 'var(--text-muted)', border: '1px solid var(--border)', fontSize: 12, cursor: 'pointer' }}>
+                                    Change
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* SubVampire — Ghost Subscription Alerts */}
+            {ghostSubscriptions.length > 0 && (
+                <div className="card" style={{ marginBottom: 24, border: '1px solid rgba(138,43,226,0.25)', background: 'rgba(138,43,226,0.04)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                        <span style={{ fontSize: 20 }}>🧛</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: '#c084fc' }}>SubVampire Alert</span>
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 'auto' }}>
+                            Draining ₹{ghostSummary.totalMonthlyWaste}/mo (₹{ghostSummary.totalAnnualWaste.toLocaleString()}/yr)
+                        </span>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+                        {ghostSubscriptions.map((ghost, i) => (
+                            <div key={i} style={{ padding: '14px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: 10, border: '1px solid var(--border)' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                                    <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{ghost.merchant}</span>
+                                    <span style={{ fontSize: 11, fontWeight: 700, color: ghost.ghostScore > 80 ? '#ff4757' : '#ffc107', background: ghost.ghostScore > 80 ? 'rgba(255,71,87,0.12)' : 'rgba(255,193,7,0.12)', padding: '2px 8px', borderRadius: 12 }}>
+                                        {ghost.ghostScore}% ghost
+                                    </span>
+                                </div>
+                                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 10 }}>
+                                    ₹{ghost.monthlyAmount}/mo • Unused for {ghost.lastUsedDaysAgo} days
+                                </div>
+                                <div style={{ display: 'flex', gap: 6 }}>
+                                    <button style={{ flex: 1, padding: '6px 0', borderRadius: 6, background: 'linear-gradient(135deg, #c084fc, #8b5cf6)', color: '#fff', border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                                        Cancel & Save ₹{ghost.annualWaste.toLocaleString()}/yr
+                                    </button>
+                                    <button style={{ padding: '6px 10px', borderRadius: 6, background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border)', fontSize: 11, cursor: 'pointer' }}>
+                                        I use this
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {ghostSummary.totalSavedThisYear > 0 && (
+                        <div style={{ marginTop: 12, padding: '8px 14px', background: 'rgba(0,212,170,0.08)', borderRadius: 8, fontSize: 12, color: 'var(--accent-green)', fontWeight: 500 }}>
+                            🎉 You've saved ₹{ghostSummary.totalSavedThisYear.toLocaleString()} this year by killing ghost subscriptions!
+                        </div>
+                    )}
+                </div>
+            )}
+
+>>>>>>> 663acad6f0533edac3f2dff1c2a5ae88ffde714d
             <div className="grid-2" style={{ marginBottom: 24 }}>
                 {/* Score History Chart */}
                 <div className="card">

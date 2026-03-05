@@ -202,3 +202,110 @@ export const getCategoryColor = (category: string): string => {
     };
     return map[category] || '#8b9abe';
 };
+<<<<<<< HEAD
+=======
+
+// ─── SubVampire Ghost Subscriptions (FM-02) ──────────────────
+export const ghostSubscriptions = [
+    {
+        id: 'ghost_1',
+        merchant: 'Fittr Premium',
+        monthlyAmount: 299,
+        annualWaste: 3588,
+        ghostScore: 91,
+        lastUsedDaysAgo: 62,
+        status: 'DETECTED' as const,
+        category: 'Fitness',
+    },
+    {
+        id: 'ghost_2',
+        merchant: 'Curiosity Stream',
+        monthlyAmount: 199,
+        annualWaste: 2388,
+        ghostScore: 85,
+        lastUsedDaysAgo: 45,
+        status: 'DETECTED' as const,
+        category: 'Education',
+    },
+    {
+        id: 'ghost_3',
+        merchant: 'Headspace',
+        monthlyAmount: 449,
+        annualWaste: 5388,
+        ghostScore: 72,
+        lastUsedDaysAgo: 34,
+        status: 'DETECTED' as const,
+        category: 'Wellness',
+    },
+];
+
+export const ghostSummary = {
+    totalMonthlyWaste: 947,
+    totalAnnualWaste: 11364,
+    ghostCount: 3,
+    ghostFreeDays: 0,
+    totalSavedThisYear: 3588, // from previously cancelled ghosts
+};
+
+// ─── Smart Nudge Pending Items ───────────────────────────────
+export const smartNudges = [
+    {
+        transactionId: 'txn_nudge_1',
+        merchantName: 'RAZORPAY*DECATHLONSP',
+        amount: 2499,
+        suggestedCategory: 'Discretionary.Shopping',
+        suggestedConfidence: 0.72,
+        alternatives: ['Discretionary.Fitness', 'Essential.Healthcare'],
+        timeAgo: '15 min ago',
+    },
+    {
+        transactionId: 'txn_nudge_2',
+        merchantName: 'UPI-NEFT CR-HDFC0001234',
+        amount: 850,
+        suggestedCategory: 'Other.Transfer',
+        suggestedConfidence: 0.45,
+        alternatives: ['Essential.Bills', 'Essential.EMI', 'Savings.Investment'],
+        timeAgo: '2 hours ago',
+    },
+];
+
+// ─── SplitSync Active Splits (FM-01) ─────────────────────────
+export const activeSplits = [
+    {
+        id: 'split_1',
+        description: 'Chai at Third Wave Coffee',
+        totalAmount: 900,
+        payer: 'Arjun S.',
+        participants: [
+            { name: 'Priya M.', amount: 300, status: 'PAID' as const },
+            { name: 'Amit K.', amount: 300, status: 'UNPAID' as const },
+        ],
+        status: 'PARTIAL' as const,
+        createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+        xpRewardPerPerson: 15,
+    },
+    {
+        id: 'split_2',
+        description: 'Dinner at Barbeque Nation',
+        totalAmount: 3200,
+        payer: 'Sneha T.',
+        participants: [
+            { name: 'Arjun S.', amount: 800, status: 'PAID' as const },
+            { name: 'Rohan K.', amount: 800, status: 'PAID' as const },
+            { name: 'Karan J.', amount: 800, status: 'PAID' as const },
+        ],
+        status: 'SETTLED' as const,
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        xpRewardPerPerson: 15,
+    },
+];
+
+export const splitSyncStats = {
+    totalSplits: 23,
+    settledSplits: 21,
+    onTimeRate: 0.94,
+    totalSettled: 18500,
+    splitStreak: 5,
+};
+
+>>>>>>> 663acad6f0533edac3f2dff1c2a5ae88ffde714d
