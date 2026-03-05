@@ -8,7 +8,10 @@ const userSchema = new mongoose.Schema({
     mobile: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
     otp: { type: String, default: null },
-    otpExpiry: { type: Date, default: null }
+    otpExpiry: { type: Date, default: null },
+    userType: { type: String, enum: ['student', 'professional'], default: null },
+    financialAmount: { type: Number, default: null },
+    bankName: { type: String, default: null }
 }, { timestamps: true });
 
 export const User = mongoose.model('User', userSchema);

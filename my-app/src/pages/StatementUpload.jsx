@@ -59,26 +59,81 @@ const StatementUpload = ({ onNavigate }) => {
 
         setScanStatus('scanning');
 
-        // Simulate local reading and pseudo ghost-detection scanning
         setTimeout(() => {
-            // Because React handles File objects securely in memory,
-            // we will simulate extracting text/data here.
+            // Secure Local Browser Parsing
+            if (file.name.endsWith('.csv')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const csvData = event.target.result;
+                    const lines = csvData.split('\n');
 
-            // For the hackathon, we save the "metadata" of the scan to localStorage
-            // to prove we processed it, but we follow Zero-Persistence by not shipping the file.
-            const scanData = {
-                id: Date.now().toString(),
-                bank: bankName,
-                fileName: file.name,
-                dateScanned: new Date().toISOString(),
-                ghostsFound: Math.floor(Math.random() * 3) + 1 // Simulate finding 1-3 ghosts
-            };
+                    const ghostKeywords = ['netflix', 'spotify', 'hulu', 'amazon prime', 'adobe', 'apple', 'gym', 'fitness', 'saas', 'software', 'vps', 'domain', 'subscription', 'recurring', 'membership'];
+                    const detectedGhosts = [];
 
-            const existingScans = JSON.parse(localStorage.getItem('statementScans') || '[]');
-            localStorage.setItem('statementScans', JSON.stringify([...existingScans, scanData]));
+                    lines.forEach((line, index) => {
+                        if (index === 0) return; // Skip header
+                        const columns = line.split(',');
+                        if (columns.length < 3) return; // Basic validation
 
-            setScanStatus('complete');
-        }, 3000);
+                        // Assumes columns: Date, Description, Amount (adjust based on typical bank CSVs)
+                        // This robustly checks every string column for keywords
+                        const rawTextContext = line.toLowerCase();
+                        let foundKeyword = ghostKeywords.find(kw => rawTextContext.includes(kw));
+
+                        if (foundKeyword) {
+                            // Extract amount roughly from the last column or any number
+                            const amounts = line.match(/[-]?\d+(\.\d+)?/g);
+                            const lastAmount = amounts ? Math.abs(parseFloat(amounts[amounts.length - 1])) : 0;
+
+                            // Don't add perfectly identical rows to avoid spam
+                            const isDuplicate = detectedGhosts.some(g => g.name.toLowerCase() === foundKeyword);
+
+                            if (lastAmount > 0 && !isDuplicate) {
+                                detectedGhosts.push({
+                                    id: Date.now().toString() + index,
+                                    name: foundKeyword.charAt(0).toUpperCase() + foundKeyword.slice(1) + ' (Found)',
+                                    amount: lastAmount,
+                                    date: new Date().toISOString()
+                                });
+                            }
+                        }
+                    });
+
+                    // Save the real processed ghosts to localStorage
+                    const existingGhosts = JSON.parse(localStorage.getItem('detectedGhosts') || '[]');
+                    localStorage.setItem('detectedGhosts', JSON.stringify([...existingGhosts, ...detectedGhosts]));
+
+                    const scanData = {
+                        id: Date.now().toString(),
+                        bank: bankName,
+                        fileName: file.name,
+                        dateScanned: new Date().toISOString(),
+                        ghostsFound: detectedGhosts.length
+                    };
+                    const existingScans = JSON.parse(localStorage.getItem('statementScans') || '[]');
+                    localStorage.setItem('statementScans', JSON.stringify([...existingScans, scanData]));
+                    setScanStatus('complete');
+                };
+                reader.onerror = () => {
+                    alert('Error reading CSV file locally.');
+                    setScanStatus('error');
+                };
+                reader.readAsText(file);
+            } else {
+                // Mock for PDF or other files during hackathon (since PDF parsing in browser is complex)
+                const mockGhostCount = Math.floor(Math.random() * 3) + 1;
+                const scanData = {
+                    id: Date.now().toString(),
+                    bank: bankName,
+                    fileName: file.name,
+                    dateScanned: new Date().toISOString(),
+                    ghostsFound: mockGhostCount
+                };
+                const existingScans = JSON.parse(localStorage.getItem('statementScans') || '[]');
+                localStorage.setItem('statementScans', JSON.stringify([...existingScans, scanData]));
+                setScanStatus('complete');
+            }
+        }, 2500);
     };
 
     const resetScan = () => {
