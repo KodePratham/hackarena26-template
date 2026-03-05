@@ -1,0 +1,135 @@
+# Docker Compose for VitalScore Finance Local Development
+# Task 1.2-1.4: Set up PostgreSQL, Redis, and InfluxDB
+
+version: '3.8'
+
+services:
+  # Task 1.2: PostgreSQL RDS Multi-AZ instance (local development)
+  postgres:
+    image: postgres:15-alpine
+    container_name: vitalscore-postgres
+    environment:
+      POSTGRES_DB: vitalscore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: vitalscore_dev_password
+      POSTGRES_INITDB_ARGS: "-E UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/schemas:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vitalscore-network
+
+  # Task 1.3: Redis ElastiCache Multi-AZ cluster (local development)
+  redis:
+    image: redis:7-alpine
+    container_name: vitalscore-redis
+    command: redis-server --appendonly yes --requirepass vitalscore_redis_password
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vitalscore-network
+
+  # Task 1.4: InfluxDB on EC2 Multi-AZ (local development)
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: vitalscore-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: vitalscore_influx_password
+      DOCKER_INFLUXDB_INIT_ORG: vitalscore
+      DOCKER_INFLUXDB_INIT_BUCKET: vitalscore
+      DOCKER_INFLUXDB_INIT_RETENTION: 52w
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: vitalscore_dev_token
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+      - influxdb_config:/etc/influxdb2
+    healthcheck:
+      test: ["CMD", "influx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vitalscore-network
+
+  # Task 1.7: AWS SQS message queue (LocalStack for local development)
+  localstack:
+    image: localstack/localstack:latest
+    container_name: vitalscore-localstack
+    environment:
+      SERVICES: sqs,s3
+      DEBUG: 1
+      DATA_DIR: /tmp/localstack/data
+      AWS_DEFAULT_REGION: ap-south-1
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    volumes:
+      - localstack_data:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vitalscore-network
+
+  # PgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: vitalscore-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@vitalscore.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - vitalscore-network
+
+  # Redis Commander for Redis management (optional)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: vitalscore-redis-commander
+    environment:
+      REDIS_HOSTS: local:redis:6379:0:vitalscore_redis_password
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - vitalscore-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  influxdb_data:
+    driver: local
+  influxdb_config:
+    driver: local
+  localstack_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  vitalscore-network:
+    driver: bridge
