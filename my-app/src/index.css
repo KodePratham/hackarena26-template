@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Optional custom base styles */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #020617;
+  /* match slate-950 */
+}
+
+#root {
+  width: 100%;
+}
