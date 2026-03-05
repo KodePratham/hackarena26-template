@@ -842,6 +842,7 @@ Navigate to **SplitSync** or **Pools** from the sidebar.
 
 ---
 
+<<<<<<< HEAD
 ## 14. Razorpay Integration — Detailed Setup
 
 > This section covers the full Razorpay setup for payments, SplitSync bill collection, and bank connections.
@@ -973,4 +974,6 @@ Webhooks let Razorpay notify your server when a payment succeeds/fails.
 
 ---
 
+=======
+>>>>>>> cf3aaf8 (local work before pull)
 *VitalScore Finance v4.0 | Honest Blockchain Usage • India-First • Free-Tier Verified • 99% Accuracy Architecture*
