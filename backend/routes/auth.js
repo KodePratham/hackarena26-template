@@ -5,7 +5,7 @@ import { User } from '../models/User.js';
 
 const router = express.Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'vampire_vault_super_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_vampire_vault_key_2024';
 
 // Nodemailer Transporter Configuration
 // Note: We use ethereal for testing if no real credentials are provided, 
