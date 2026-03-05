@@ -1,7 +1,12 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts'
 import HeartbeatVisualizer from '../components/Dashboard/HeartbeatVisualizer'
+<<<<<<< HEAD
+import { currentScore, scoreHistory, scoreForecast, spendingBreakdown, recentTransactions, getCategoryColor, currentUser, getBandConfig } from '../data/mockData'
+import { TrendingUp, Flame, Zap, ArrowUpRight } from 'lucide-react'
+=======
 import { currentScore, scoreHistory, scoreForecast, spendingBreakdown, recentTransactions, getCategoryColor, currentUser, getBandConfig, ghostSubscriptions, ghostSummary, smartNudges } from '../data/mockData'
 import { TrendingUp, Flame, Zap, ArrowUpRight, Ghost, AlertTriangle, Check, X } from 'lucide-react'
+>>>>>>> 663acad6f0533edac3f2dff1c2a5ae88ffde714d
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
@@ -55,6 +60,8 @@ export default function Dashboard() {
                 ))}
             </div>
 
+<<<<<<< HEAD
+=======
             {/* Smart Nudge Banner — Pending Categorizations */}
             {smartNudges.length > 0 && (
                 <div className="card" style={{ marginBottom: 24, border: '1px solid rgba(255,193,7,0.3)', background: 'rgba(255,193,7,0.05)' }}>
@@ -128,6 +135,7 @@ export default function Dashboard() {
                 </div>
             )}
 
+>>>>>>> 663acad6f0533edac3f2dff1c2a5ae88ffde714d
             <div className="grid-2" style={{ marginBottom: 24 }}>
                 {/* Score History Chart */}
                 <div className="card">
