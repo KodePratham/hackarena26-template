@@ -842,7 +842,6 @@ Navigate to **SplitSync** or **Pools** from the sidebar.
 
 ---
 
-<<<<<<< HEAD
 ## 14. Razorpay Integration — Detailed Setup
 
 > This section covers the full Razorpay setup for payments, SplitSync bill collection, and bank connections.

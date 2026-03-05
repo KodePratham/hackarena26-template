@@ -6,12 +6,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import path from 'path';
 import userRoutes from './routes/userRoutes';
 import logger from './config/logger';
 import pool from './config/database';
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from project root
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '..', '.env') });
 
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
@@ -61,7 +62,7 @@ app.get('/health', async (req: Request, res: Response) => {
   try {
     // Check database connection
     await pool.query('SELECT 1');
-    
+
     res.status(200).json({
       success: true,
       data: {

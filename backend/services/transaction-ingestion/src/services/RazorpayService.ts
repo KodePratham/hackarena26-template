@@ -2,12 +2,17 @@ import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import logger from '../config/logger';
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID || '',
-    key_secret: process.env.RAZORPAY_KEY_SECRET || '',
-});
+const isMockMode = !process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET;
 
-const isMockMode = !process.env.RAZORPAY_KEY_ID;
+let razorpay: Razorpay | null = null;
+if (!isMockMode) {
+    razorpay = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID!,
+        key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    });
+} else {
+    console.log('[Razorpay] Running in MOCK mode — no API keys configured');
+}
 
 export class RazorpayService {
 

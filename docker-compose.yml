@@ -1,7 +1,7 @@
 # Docker Compose for VitalScore Finance Local Development
 # Task 1.2-1.4: Set up PostgreSQL, Redis, and InfluxDB
 
-version: '3.8'
+#version: '3.8'
 
 services:
   # Task 1.2: PostgreSQL RDS Multi-AZ instance (local development)
@@ -19,7 +19,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/database/schemas:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,7 +36,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -61,7 +61,7 @@ services:
       - influxdb_data:/var/lib/influxdb2
       - influxdb_config:/etc/influxdb2
     healthcheck:
-      test: ["CMD", "influx", "ping"]
+      test: [ "CMD", "influx", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5

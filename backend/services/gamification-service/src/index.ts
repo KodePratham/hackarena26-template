@@ -3,13 +3,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import path from 'path';
 import logger from './config/logger';
 import gamificationRoutes from './routes/gamificationRoutes';
 import cron from 'node-cron';
 import pool from './config/database';
 import { FundingPoolService } from './services/FundingPoolService';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '..', '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3005;

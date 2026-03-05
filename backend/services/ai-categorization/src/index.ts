@@ -3,10 +3,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import path from 'path';
 import logger from './config/logger';
 import categorizationRoutes from './routes/categorizationRoutes';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '..', '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3007;

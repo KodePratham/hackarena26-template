@@ -4,11 +4,7 @@
  * Manages the complete split lifecycle:
  * 1. Create split (DB + blockchain)
  * 2. Send WhatsApp notifications to participants
-<<<<<<< HEAD
  * 3. Generate payment links (Razorpay Payment Links)
-=======
- * 3. Generate payment links (UPI deep links)
->>>>>>> cf3aaf8 (local work before pull)
  * 4. Record payments (DB + blockchain)
  * 5. Send confirmations to initiator
  * 6. Mark complete when all paid
@@ -23,10 +19,7 @@ import {
     sendSplitCompleteNotification,
     sendPaymentReminder,
 } from './whatsapp';
-<<<<<<< HEAD
 import { createSplitPaymentLink } from './razorpay';
-=======
->>>>>>> cf3aaf8 (local work before pull)
 
 const BLOCKCHAIN_SERVICE_URL = process.env.BLOCKCHAIN_SERVICE_URL || 'http://localhost:3006';
 
@@ -91,15 +84,9 @@ export class SplitSyncService {
                     [participantId, splitId, p.userId || null, p.name, p.phone || null, p.amount]
                 );
 
-<<<<<<< HEAD
                 // 3. Generate Razorpay payment link
                 const paymentLink = await SplitSyncService.generatePaymentLink(
                     splitId, participantId, p.amount, input.description, p.name, p.phone
-=======
-                // 3. Generate payment link (UPI deep link)
-                const paymentLink = SplitSyncService.generatePaymentLink(
-                    splitId, participantId, p.amount, input.description
->>>>>>> cf3aaf8 (local work before pull)
                 );
 
                 // Store payment link
@@ -108,11 +95,7 @@ export class SplitSyncService {
                      VALUES ($1, $2, $3, $4, $5, $6)`,
                     [
                         uuidv4(), splitId, participantId,
-<<<<<<< HEAD
                         paymentLink.shortUrl, paymentLink.shortUrl,
-=======
-                        paymentLink.webUrl, paymentLink.upiDeeplink,
->>>>>>> cf3aaf8 (local work before pull)
                         deadline,
                     ]
                 );
@@ -122,11 +105,7 @@ export class SplitSyncService {
                 if (p.phone) {
                     const whatsappResult = await sendSplitPaymentRequest(
                         p.phone, p.name, input.payerName,
-<<<<<<< HEAD
                         p.amount, input.description, paymentLink.shortUrl
-=======
-                        p.amount, input.description, paymentLink.webUrl
->>>>>>> cf3aaf8 (local work before pull)
                     );
                     notified = whatsappResult.success;
 
@@ -141,11 +120,7 @@ export class SplitSyncService {
                 participantResults.push({
                     name: p.name,
                     amountOwed: p.amount,
-<<<<<<< HEAD
                     paymentLink: paymentLink.shortUrl,
-=======
-                    paymentLink: paymentLink.webUrl,
->>>>>>> cf3aaf8 (local work before pull)
                     notified,
                 });
             }
@@ -341,21 +316,12 @@ export class SplitSyncService {
 
         let sent = 0;
         for (const row of rows) {
-<<<<<<< HEAD
             const link = await SplitSyncService.generatePaymentLink(
                 splitId, row.participant_id, row.amount_owed, row.description, row.name, row.phone
             );
             const result = await sendPaymentReminder(
                 row.phone, row.name, row.payer_name || 'Your friend',
                 row.amount_owed, link.shortUrl
-=======
-            const link = SplitSyncService.generatePaymentLink(
-                splitId, row.participant_id, row.amount_owed, row.description
-            );
-            const result = await sendPaymentReminder(
-                row.phone, row.name, row.payer_name || 'Your friend',
-                row.amount_owed, link.webUrl
->>>>>>> cf3aaf8 (local work before pull)
             );
             if (result.success) {
                 sent++;
@@ -383,7 +349,6 @@ export class SplitSyncService {
 
     // ─── Private Helpers ───
 
-<<<<<<< HEAD
     private static async generatePaymentLink(
         splitId: string, participantId: string, amount: number, description: string,
         participantName: string = 'Participant', participantPhone?: string | null
@@ -399,21 +364,6 @@ export class SplitSyncService {
             description,
             expireBy,
         });
-=======
-    private static generatePaymentLink(
-        splitId: string, participantId: string, amount: number, description: string
-    ): { webUrl: string; upiDeeplink: string } {
-        const baseUrl = process.env.APP_BASE_URL || 'http://localhost:5173';
-        const upiId = process.env.UPI_MERCHANT_ID || 'vitalscore@upi';
-
-        // UPI deep link (works on all UPI apps in India)
-        const upiDeeplink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=VitalScore&am=${amount}&cu=INR&tn=${encodeURIComponent(description)}&tr=${participantId}`;
-
-        // Web payment page
-        const webUrl = `${baseUrl}/pay/${splitId}/${participantId}`;
-
-        return { webUrl, upiDeeplink };
->>>>>>> cf3aaf8 (local work before pull)
     }
 
     private static async getUserPhone(userId: string): Promise<string | null> {

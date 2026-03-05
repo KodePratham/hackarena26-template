@@ -3,13 +3,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import path from 'path';
 import cron from 'node-cron';
 import logger from './config/logger';
 import scoreRoutes from './routes/scoreRoutes';
 import { TransactionEventWorker } from './workers/TransactionEventWorker';
 import pool from './config/database';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '..', '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3004;
