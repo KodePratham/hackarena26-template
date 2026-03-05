@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, ChevronDown, Calendar as CalIcon } from 'lucide-react';
+import { Settings, ChevronDown, Calendar as CalIcon, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SubscriptionManager = () => {
@@ -40,9 +40,21 @@ const SubscriptionManager = () => {
                 {/* Header */}
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-white tracking-tight">Subscription Manager</h1>
-                    <button className="flex items-center gap-2 px-4 py-2 border border-[#20c997] text-[#20c997] rounded flex hover:bg-[#20c997]/10 transition-colors text-sm font-semibold">
-                        <Settings size={16} /> Settings
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button className="flex items-center gap-2 px-4 py-2 border border-[#20c997] text-[#20c997] rounded hover:bg-[#20c997]/10 transition-colors text-sm font-semibold">
+                            <Settings size={16} /> Settings
+                        </button>
+                        <button
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('user');
+                                window.location.reload();
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-500/50 text-red-500 rounded hover:bg-red-600 hover:text-white transition-colors text-sm font-semibold"
+                        >
+                            <LogOut size={16} /> Logout
+                        </button>
+                    </div>
                 </div>
 
                 {/* Calendar Days Header */}

@@ -10,7 +10,8 @@ const AuthPage = ({ initialMode = 'login', onLoginSuccess }) => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const API_URL = 'http://localhost:5000/api/auth';
+    // We use 127.0.0.1 instead of localhost to prevent IPv6 resolution issues on Mac
+    const API_URL = 'http://127.0.0.1:5000/api/auth';
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
