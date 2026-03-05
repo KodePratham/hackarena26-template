@@ -5,17 +5,19 @@
 
 ## Team Details
 
-- **Team Name:**
-- **Members:**
-- **Domain:**
+- **Team Name:** TEAM ASTRA
+- **Members:** 1] Yash Malas 2] Krrish Ronghe 3] Aayushmita Sapre 4] Rutuja Belokar
+- **Domain:** HW-04
+  
 
----
+
 
 ## Project
 
 **Problem:** 
 
-**Solution:** 
+**Solution:** NutriSync AI is an AI-powered intelligent nutrition
+ecosystem that dynamically generates personalized diet plans based on: Real Time Physiological data( HR,BP,SpO2,HRV )
 
 ---
 
