@@ -5,17 +5,21 @@
 
 ## Team Details
 
-- **Team Name:**
-- **Members:**
-- **Domain:**
+- **Team Name:Vision Vortex**
+- **Members:
+    1. Varad Rathi
+    2. Shreya Teli
+    3. Salina Tamboli
+    4. Aryan Shingare**
+- **Domain: FinTech**
 
 ---
 
 ## Project
 
-**Problem:** 
+**Problem: SubVampire Slayer** 
 
-**Solution:** 
+**Solution: ** 
 
 ---
 
